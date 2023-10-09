@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { dark, light, mirage } from "ayu";
 
 const config: Config = {
   content: [
