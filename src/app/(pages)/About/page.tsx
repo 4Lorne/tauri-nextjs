@@ -1,5 +1,4 @@
 "use client";
-import { marked } from "marked";
 import { Dispatch, SetStateAction, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -15,12 +14,75 @@ const Title = () => {
     </div>
   );
 };
+
+const Toolbar = ({
+  selectedText,
+  setText,
+  text,
+}: {
+  selectedText: string;
+  setText: Dispatch<SetStateAction<string>>;
+  text: string;
+}) => {
+  const handleClick = () => {
+    if (selectedText) {
+      const modifiedText = `**${selectedText}**`;
+      const newText = text.replace(selectedText, modifiedText);
+      setText(newText);
+      console.log(newText);
+    }
+  };
+
+  return (
+    <span className="isolate inline-flex rounded-md shadow-sm">
+      <button
+        type="button"
+        className="relative inline-flex items-center rounded-l-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+        onClick={() => {
+          handleClick();
+        }}
+      >
+        B
+      </button>
+      <button
+        type="button"
+        className="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+      >
+        I
+      </button>
+      <button
+        type="button"
+        className="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+      >
+        U
+      </button>
+      <button
+        type="button"
+        className="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+      >
+        Code
+      </button>
+      <button
+        type="button"
+        className="relative -ml-px inline-flex items-center rounded-r-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+      >
+        Table
+      </button>
+    </span>
+  );
+};
+
+const BoldText = (selectedText: string) => {
+  return `**${selectedText}**`;
+};
+
 /* TODO
 Auto add bullet when previous line uses bullet
 Highlight and auto wrap text in bold, italics, etc when selected
 Enter adds newline
 Adding new colors to the tailwind typography plugin
 Add a toolbar for markdown
+Add split pane
 Bug: Tab is adding codeblock when there isn't anything else
 */
 const TextArea = ({
@@ -46,36 +108,40 @@ const TextArea = ({
   };
 
   return (
-    <>
+    <div className="me-1 w-1/2">
       <textarea
         id="editor"
-        className="resize-both m-2 border border-black bg-slate-400 p-2 text-slate-50 focus:outline-none"
+        className="resize-both m-2 h-full w-full border border-black bg-slate-400 p-2 text-slate-50 focus:outline-none"
         cols={screen.width / 9}
         rows={30}
         onKeyDown={handleTab}
         onChange={(e) => setText(e.target.value)}
       />
-    </>
+    </div>
   );
 };
 
 const Markdown = ({ text }: { text: string }) => {
   return (
-    <div className="m-2 w-full border border-black bg-slate-400 p-2">
-      <ReactMarkdown className={"prose text-slate-50"}>{text}</ReactMarkdown>
+    <div className="ms-1 w-1/2">
+      <div className="m-2 h-full border border-black bg-slate-400 p-2">
+        <ReactMarkdown className={"prose text-slate-50"}>{text}</ReactMarkdown>
+      </div>
     </div>
   );
 };
 
 const About = () => {
   const [text, setText] = useState("");
-  console.log(text);
-  const testing = marked.parse(text);
+  const [selectedText, setSelectedText] = useState("");
   // DOMPurify.sanitize(testing);
   return (
     <>
       <Title />
-      <div className="flex flex-row bg-slate-600">
+      <div className="bg-slate-600 ps-2 pt-2">
+        <Toolbar selectedText={selectedText} setText={setText} text={text} />{" "}
+      </div>
+      <div className="flex h-screen flex-row bg-slate-600">
         <TextArea setText={setText} />
         <Markdown text={text} />
       </div>
