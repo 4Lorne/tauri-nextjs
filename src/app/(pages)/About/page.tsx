@@ -79,7 +79,7 @@ const BoldText = (selectedText: string) => {
 /* TODO
 Auto add bullet when previous line uses bullet
 Highlight and auto wrap text in bold, italics, etc when selected
-Enter adds newline
+Enter adds newline - need to add 2 spaces to add newline
 Adding new colors to the tailwind typography plugin
 Add a toolbar for markdown
 Add split pane
@@ -97,7 +97,7 @@ const TextArea = ({
       // Takes the value before the caret and after the caret and combines them with 4 spaces in between
       const newValue =
         value.substring(0, selectionStart) +
-        "    " +
+        "\t" +
         value.substring(selectionEnd);
       e.currentTarget.value = newValue;
       setText(newValue);
