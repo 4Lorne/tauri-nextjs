@@ -106,13 +106,12 @@ const TextArea = ({
         selectionStart + 4;
     }
   };
-
   return (
     <div className="me-1 w-1/2">
       <textarea
         id="editor"
         className="resize-both m-2 h-full w-full border border-black bg-slate-400 p-2 text-slate-50 focus:outline-none"
-        cols={window.screen.width / 9}
+        cols={30}
         rows={30}
         onKeyDown={handleTab}
         onChange={(e) => setText(e.target.value)}
