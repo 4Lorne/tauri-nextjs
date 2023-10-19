@@ -97,7 +97,7 @@ const TextArea = ({
       // Takes the value before the caret and after the caret and combines them with 4 spaces in between
       const newValue =
         value.substring(0, selectionStart) +
-        "\t" +
+        "\u0009" +
         value.substring(selectionEnd);
       e.currentTarget.value = newValue;
       setText(newValue);
@@ -112,7 +112,7 @@ const TextArea = ({
       <textarea
         id="editor"
         className="resize-both m-2 h-full w-full border border-black bg-slate-400 p-2 text-slate-50 focus:outline-none"
-        cols={screen.width / 9}
+        cols={window.screen.width / 9}
         rows={30}
         onKeyDown={handleTab}
         onChange={(e) => setText(e.target.value)}
@@ -134,6 +134,7 @@ const Markdown = ({ text }: { text: string }) => {
 const About = () => {
   const [text, setText] = useState("");
   const [selectedText, setSelectedText] = useState("");
+  console.log(text);
   // DOMPurify.sanitize(testing);
   return (
     <>
