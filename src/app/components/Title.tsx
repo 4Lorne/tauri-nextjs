@@ -9,6 +9,6 @@ const Title = () => {
       </p>
     </div>
   );
-}
+};
 
 export default Title;
