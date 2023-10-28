@@ -12,6 +12,23 @@ export default function Home() {
   const [selectedText, setSelectedText] = useState("");
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!inputFileRef.current?.files) {
+      throw new Error("No file selected");
+    }
+
+    const file = inputFileRef.current.files[0];
+
+    const newBlob = await upload(file.name, file, {
+      access: "public",
+      handleUploadUrl: "/api/upload",
+    });
+
+    setBlob(newBlob);
+  };
+
   console.log(blob);
   return (
     <>
@@ -21,24 +38,7 @@ export default function Home() {
           Blob url: <a href={blob.url}>{blob.url}</a>
         </div>
       )}
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault();
-
-          if (!inputFileRef.current?.files) {
-            throw new Error("No file selected");
-          }
-
-          const file = inputFileRef.current.files[0];
-
-          const newBlob = await upload(file.name, file, {
-            access: "public",
-            handleUploadUrl: "/api/upload",
-          });
-
-          setBlob(newBlob);
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <input name="file" type="file" ref={inputFileRef} required />
         <button type="submit">Submit</button>
       </form>
