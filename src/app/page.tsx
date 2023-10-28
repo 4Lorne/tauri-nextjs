@@ -8,10 +8,13 @@ import Title from "./components/Title";
 import Toolbar from "./components/Toolbar";
 import { PutBlobResult } from "@vercel/blob";
 import useFetch from "./middleware/useFetch";
+import { upload } from "@vercel/blob/client";
 
 export default function Home() {
   const [text, setText] = useState("");
   const [selectedText, setSelectedText] = useState("");
+  const [blob, setBlob] = useState<PutBlobResult | null>(null);
+
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -47,10 +50,27 @@ export default function Home() {
   return (
     <>
       <Title />
+      {blob && (
+        <div>
+          Blob url: <a href={blob.url}>{blob.url}</a>
+        </div>
+      )}
       <form
-        method="POST"
-        onSubmit={(e) => {
-          handleSubmit(e);
+        onSubmit={async (event) => {
+          event.preventDefault();
+
+          if (!inputFileRef.current?.files) {
+            throw new Error("No file selected");
+          }
+
+          const file = inputFileRef.current.files[0];
+
+          const newBlob = await upload(file.name, file, {
+            access: "public",
+            handleUploadUrl: "/api/upload",
+          });
+
+          setBlob(newBlob);
         }}
       >
         <input name="file" type="file" ref={inputFileRef} required />
