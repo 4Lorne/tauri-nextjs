@@ -1,6 +1,7 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 
+//https://vercel.com/docs/storage/vercel-blob/quickstart#create-a-client-upload-page
 export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
 

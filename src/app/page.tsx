@@ -1,7 +1,5 @@
 "use client";
-
-import Link from "next/link";
-import { FormEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import MarkdownArea from "./components/MarkdownArea";
 import TextArea from "./components/TextArea";
 import Title from "./components/Title";
