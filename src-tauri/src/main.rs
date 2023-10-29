@@ -3,21 +3,21 @@
 
 mod api_request;
 
-use api_request::make_api_request;
+//use api_request::make_api_request;
 use tokio;
 
 #[tokio::main]
 async fn main() {
-    let api_url = "https://jsonplaceholder.typicode.com/posts/1"; // Replace with your API URL.
+    // let api_url = "https://jsonplaceholder.typicode.com/posts/1"; // Replace with your API URL.
 
-    match make_api_request(api_url).await {
-        Ok(response) => {
-            println!("API Response: {}", response);
-        }
-        Err(err) => {
-            eprintln!("Error: {}", err);
-        }
-    }
+    // match make_api_request(api_url).await {
+    //     Ok(response) => {
+    //         println!("API Response: {}", response);
+    //     }
+    //     Err(err) => {
+    //         eprintln!("Error: {}", err);
+    //     }
+    // }
 
     tauri::Builder::default()
         .run(tauri::generate_context!())

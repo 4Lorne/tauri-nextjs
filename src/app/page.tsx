@@ -29,8 +29,6 @@ export default function Home() {
     setBlob(newBlob);
   };
 
-  console.log(blob);
-
   //TODO: Loading state on save button
   //TODO: Save button should be disabled if no changes have been made
   return (
