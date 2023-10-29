@@ -30,6 +30,9 @@ export default function Home() {
   };
 
   console.log(blob);
+
+  //TODO: Loading state on save button
+  //TODO: Save button should be disabled if no changes have been made
   return (
     <>
       <Title />
