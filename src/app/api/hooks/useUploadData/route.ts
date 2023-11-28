@@ -3,11 +3,11 @@ import { sql } from "@vercel/postgres";
 
 const uploadData = async (req: NextResponse): Promise<NextResponse> => {
   try {
-    const { Filename, File_data } = await req.json();
+    const { filename, file_data } = await req.json();
 
     await sql`
         INSERT INTO files (filename, file_data)
-        VALUES (${Filename}, ${File_data})`;
+        VALUES (${filename}, ${file_data})`;
     return new NextResponse(JSON.stringify(req), {
       status: 200,
       headers: {

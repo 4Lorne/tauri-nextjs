@@ -10,6 +10,8 @@ import Hamburger from "@/app/components/Hamburger";
 
 export default function Home() {
   const [text, setText] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [newFileName, setNewFileName] = useState("");
   const [selectedText, setSelectedText] = useState("");
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -34,38 +36,45 @@ export default function Home() {
   //TODO: Save button should be disabled if no changes have been made
 
   const reqBody = {
-    Filename: "test1",
+    Filename: "test2",
     File_data: text,
   };
 
   return (
     <>
-      <Hamburger setText={setText} />
+      <Hamburger
+        setText={setText}
+        setFileName={setFileName}
+        text={text}
+        fileName={fileName}
+        newFileName={newFileName}
+      />
       {/*<Title />*/}
-      {/*{blob && (*/}
-      {/*  <div>*/}
-      {/*    Blob url: <a href={blob.url}>{blob.url}</a>*/}
-      {/*  </div>*/}
-      {/*)}*/}
-      <form
-        onSubmit={async () => {
-          await fetch("api/hooks/useUploadData/", {
-            method: "POST",
-            body: JSON.stringify(reqBody),
-          });
-        }}
-      >
-        <input name="file" type="file" ref={inputFileRef} />
-        <button type="submit">Submit</button>
-      </form>
+      {/*<form*/}
+      {/*  onSubmit={async () => {*/}
+      {/*    await fetch("api/hooks/useUploadData/", {*/}
+      {/*      method: "POST",*/}
+      {/*      body: JSON.stringify(reqBody),*/}
+      {/*    });*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <input name="file" type="file" ref={inputFileRef} />*/}
+      {/*  <button type="submit">Submit</button>*/}
+      {/*</form>*/}
 
       {/*<div className="bg-slate-600 ps-2 pt-2">*/}
       {/*  <Toolbar selectedText={selectedText} setText={setText} text={text} />{" "}*/}
       {/*</div>*/}
-      {/*<div className="flex h-screen flex-row bg-slate-600">*/}
-      <TextArea setText={setText} text={text} />
-      {/*  <MarkdownArea text={text} />*/}
-      {/*</div>*/}
+      <div className={"ml-2 mt-2"}>
+        {/*<input*/}
+        {/*  defaultValue={fileName}*/}
+        {/*  onBlur={(e) => setNewFileName(e.target.value)}*/}
+        {/*/>*/}
+      </div>
+      <div className="flex h-screen flex-row bg-slate-600">
+        <TextArea setText={setText} text={text} />
+        <MarkdownArea text={text} />
+      </div>
     </>
   );
 }
