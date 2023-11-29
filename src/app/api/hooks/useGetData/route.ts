@@ -3,10 +3,11 @@ import { sql } from "@vercel/postgres";
 
 const getData = async (req: NextResponse) => {
   try {
-    const { filename } = await req.json();
+    const url = new URL(req.url);
+    const filename = url.searchParams.get("filename");
+
     const res =
       await sql`SELECT file_data FROM files WHERE filename = ${filename}`;
-
     return new NextResponse(JSON.stringify(res), {
       status: 200,
       headers: {
@@ -19,4 +20,4 @@ const getData = async (req: NextResponse) => {
   }
 };
 
-export { getData as POST };
+export { getData as GET };
