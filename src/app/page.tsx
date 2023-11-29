@@ -9,9 +9,9 @@ import { upload } from "@vercel/blob/client";
 import Hamburger from "@/app/components/Hamburger";
 
 export default function Home() {
-  const [text, setText] = useState("");
-  const [fileName, setFileName] = useState("");
-  const [newFileName, setNewFileName] = useState("");
+  const [fileData, setFileData] = useState("");
+  const [filename, setFilename] = useState("");
+  const [newFilename, setNewFilename] = useState("");
   const [selectedText, setSelectedText] = useState("");
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -35,19 +35,14 @@ export default function Home() {
   //TODO: Loading state on save button
   //TODO: Save button should be disabled if no changes have been made
 
-  const reqBody = {
-    Filename: "test2",
-    File_data: text,
-  };
-
   return (
     <>
       <Hamburger
-        setText={setText}
-        setFileName={setFileName}
-        text={text}
-        fileName={fileName}
-        newFileName={newFileName}
+        setFileData={setFileData}
+        setFileName={setFilename}
+        fileData={fileData}
+        filename={filename}
+        newFilename={newFilename}
       />
       {/*<Title />*/}
       {/*<form*/}
@@ -72,8 +67,8 @@ export default function Home() {
         {/*/>*/}
       </div>
       <div className="flex h-screen flex-row bg-slate-600">
-        <TextArea setText={setText} text={text} />
-        <MarkdownArea text={text} />
+        <TextArea setFileData={setFileData} fileData={fileData} />
+        <MarkdownArea fileData={fileData} />
       </div>
     </>
   );

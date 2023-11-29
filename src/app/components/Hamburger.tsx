@@ -1,151 +1,77 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import {
-  FolderIcon,
-  MinusIcon,
-  PencilSquareIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@heroicons/react/20/solid";
+import { useEffect, useState } from "react";
 import { ENDPOINTS } from "@/app/api/endpoints";
+import { useToggle } from "usehooks-ts";
+import { ShowButtons } from "@/app/components/Buttons/ShowButtons";
+import { ShowFilesButton } from "@/app/components/Buttons/ShowFilesButton";
+import { NewFileButton } from "@/app/components/Buttons/NewFileButton";
+import { SaveFileButton } from "@/app/components/Buttons/SaveFileButton";
+import { SelectFileButton } from "@/app/components/Buttons/SelectFileButton";
+
+interface HamburgerProps {
+  setFileData: (arg: string) => void;
+  setFileName: (arg: string) => void;
+  fileData: string;
+  filename: string;
+  newFilename: string;
+}
 
 const Hamburger = ({
-  setText,
+  setFileData,
   setFileName,
-  text,
-  fileName,
-  newFileName,
-}: {
-  setText: Dispatch<SetStateAction<string>>;
-  setFileName: Dispatch<SetStateAction<string>>;
-  text: string;
-  fileName: string;
-  newFileName: string;
-}) => {
-  const [showButtons, setShowButtons] = useState(false);
+  fileData,
+  filename,
+  newFilename,
+}: HamburgerProps) => {
+  const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
   const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(ENDPOINTS.GET_LIST, {
-          method: "GET", // Change the request method to GET
+    const fetchData = () => {
+      fetch(ENDPOINTS.GET_LIST, {
+        method: "GET",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setFileList(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
         });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setFileList(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
     };
+
     fetchData();
   }, []);
-
-  const reqBody = {
-    filename: fileName,
-    new_filename: newFileName,
-    file_data: text,
-  };
-
-  const createFile = {
-    filename: "Untitled",
-    file_data: "",
-  };
 
   return (
     <>
       <div className={"flex bg-red-800"}>
-        <button
-          onClick={() => {
-            setShowButtons(!showButtons);
-            setShowList(false);
-          }}
-          className={"px-2 py-2 hover:bg-slate-500"}
-        >
-          <FolderIcon
-            className={"h-6 w-6 text-slate-50 hover:text-slate-100"}
-          />
-        </button>
+        <ShowButtons
+          setShowButtons={setShowButtons}
+          setShowList={setShowList}
+        />
         {showButtons && (
-          <div>
-            <button
-              onClick={() => {
-                setShowList(!showList);
-              }}
-              className={"px-2 py-2 hover:bg-slate-500"}
-            >
-              {showList ? (
-                <MinusIcon
-                  className={"h-6 w-6 text-slate-50 hover:text-slate-100"}
-                />
-              ) : (
-                <PlusIcon className="h-6 w-6 text-slate-50 hover:text-slate-100" />
-              )}
-            </button>
-          </div>
+          <ShowFilesButton setShowList={setShowList} showList={showList} />
         )}
-        {showList && (
-          <div>
-            <button
-              className={"px-2 py-2 hover:bg-slate-500"}
-              onClick={async () => {
-                await fetch("api/hooks/useUploadData/", {
-                  method: "POST",
-                  body: JSON.stringify(createFile),
-                });
-              }}
-            >
-              <PencilSquareIcon
-                className={"h-6 w-6 text-slate-50 hover:text-slate-100"}
-              />
-            </button>
-          </div>
-        )}
-        <button
-          className={"px-2 py-2 hover:bg-slate-500"}
-          onClick={() => {
-            fetch("api/hooks/useUpdateData/", {
-              method: "PUT",
-              body: JSON.stringify(reqBody),
-            }).then((r) => console.log(r.text()));
-          }}
-        >
-          <label>Save</label>
-        </button>
+        {showList && <NewFileButton />}
+        <SaveFileButton
+          fileData={fileData}
+          filename={filename}
+          newFilename={newFilename}
+        />
       </div>
 
       {showList && (
-        <div className="hamburger">
-          {fileList.map((file, index: number) => (
-            <button
-              className={"flex flex-col text-slate-50 hover:text-slate-300"}
-              key={index}
-              onClick={async () => {
-                const response = await fetch(
-                  `${ENDPOINTS.GET_DATA}/?filename=${file}`,
-                  {
-                    method: "GET",
-                  },
-                );
-
-                if (!response.ok) {
-                  throw new Error("Failed to fetch data");
-                }
-
-                const data = await response.json();
-                const fileData = data.rows[0].file_data.data;
-                setText(Buffer.from(fileData).toString("utf-8"));
-                setFileName(file);
-              }}
-            >
-              <label className={"hover:bg-slate-500"}>{file}</label>
-            </button>
-          ))}
-        </div>
+        <SelectFileButton
+          fileList={fileList}
+          setFileData={setFileData}
+          setFileName={setFileName}
+        />
       )}
     </>
   );

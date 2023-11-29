@@ -1,12 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React from "react";
 
-const TextArea = ({
-  setText,
-  text,
-}: {
-  setText: Dispatch<SetStateAction<string>>;
-  text: string;
-}) => {
+interface TextAreaProps {
+  setFileData: (arg: string) => void;
+  fileData: string;
+}
+const TextArea = ({ setFileData, fileData }: TextAreaProps) => {
   const handleTab = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Tab") {
       e.preventDefault();
@@ -16,7 +14,7 @@ const TextArea = ({
         "\u0009" +
         value.substring(selectionEnd);
       e.currentTarget.value = newValue;
-      setText(newValue);
+      setFileData(newValue);
       e.currentTarget.selectionStart = e.currentTarget.selectionEnd =
         selectionStart + 4;
     }
@@ -30,8 +28,8 @@ const TextArea = ({
         cols={30}
         rows={30}
         onKeyDown={handleTab}
-        onChange={(e) => setText(e.target.value)}
-        defaultValue={text}
+        onChange={(e) => setFileData(e.target.value)}
+        defaultValue={fileData}
       />
     </div>
   );
