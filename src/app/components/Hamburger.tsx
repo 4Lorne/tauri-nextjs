@@ -6,6 +6,7 @@ import { ShowFilesButton } from "@/app/components/Buttons/ShowFilesButton";
 import { NewFileButton } from "@/app/components/Buttons/NewFileButton";
 import { SaveFileButton } from "@/app/components/Buttons/SaveFileButton";
 import { SelectFileButton } from "@/app/components/Buttons/SelectFileButton";
+import { TextFile } from "@/app/types/TextFile";
 
 interface HamburgerProps {
   setFileData: (arg: string) => void;
@@ -14,6 +15,24 @@ interface HamburgerProps {
   filename: string;
   newFilename: string;
 }
+
+const fetchData = (setFileList: (data: TextFile[]) => void) => {
+  fetch(ENDPOINTS.GET_LIST, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      setFileList(data.rows);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+};
 
 const Hamburger = ({
   setFileData,
@@ -24,30 +43,17 @@ const Hamburger = ({
 }: HamburgerProps) => {
   const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
-  const [fileList, setFileList] = useState([]);
+  const [fileList, setFileList] = useState<TextFile[]>([]);
   const [fileID, setFileID] = useState(0);
 
   useEffect(() => {
-    const fetchData = () => {
-      fetch(ENDPOINTS.GET_LIST, {
-        method: "GET",
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch data");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setFileList(data.rows);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    };
-
-    fetchData();
+    fetchData(setFileList);
   }, []);
+
+  const onFileCreation = (createdFile: TextFile) => {
+    setFileList((prevFileList) => [...prevFileList, createdFile]);
+    fetchData(setFileList);
+  };
 
   return (
     <>
@@ -61,7 +67,7 @@ const Hamburger = ({
           <ShowFilesButton setShowList={setShowList} showList={showList} />
         )}
 
-        {showList && <NewFileButton />}
+        {showList && <NewFileButton fileCreated={onFileCreation} />}
 
         <SaveFileButton
           fileID={fileID}

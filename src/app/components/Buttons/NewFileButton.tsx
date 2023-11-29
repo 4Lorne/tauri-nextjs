@@ -1,9 +1,12 @@
 import { ENDPOINTS } from "@/app/api/endpoints";
 import { PencilSquareIcon } from "@heroicons/react/20/solid";
 
-export const NewFileButton = () => {
+interface NewFileButtonProps {
+  fileCreated: (arg: any) => void;
+}
+export const NewFileButton = ({ fileCreated }: NewFileButtonProps) => {
   const defaultFile = {
-    filename: "Untitled",
+    filename: "Untitled" + Math.floor(Math.random() * 1000),
     file_data: "",
   };
 
@@ -11,10 +14,13 @@ export const NewFileButton = () => {
     <button
       className={"px-2 py-2 hover:bg-slate-500"}
       onClick={async () => {
-        await fetch(ENDPOINTS.POST_DATA, {
+        const response = await fetch(ENDPOINTS.POST_DATA, {
           method: "POST",
           body: JSON.stringify(defaultFile),
         });
+        const createdFile = await response.json();
+
+        fileCreated(createdFile);
       }}
     >
       <PencilSquareIcon

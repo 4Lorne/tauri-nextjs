@@ -1,5 +1,5 @@
 export interface TextFile {
   id: number;
   filename: string;
-  content: string;
+  file_data: { type: string; data: number[] };
 }
