@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 
-const updateData = async (req: NextResponse) => {
+const updateData = async (req: NextRequest) => {
   try {
     let { id, filename, file_data, new_filename } = await req.json();
 
