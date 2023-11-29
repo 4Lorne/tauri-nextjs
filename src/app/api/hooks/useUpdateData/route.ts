@@ -9,6 +9,7 @@ const updateData = async (req: NextResponse) => {
 
     const res =
       await sql`UPDATE files SET file_data = ${file_data}, filename = ${new_filename} WHERE filename = ${filename}`;
+
     return new NextResponse(JSON.stringify(res), {
       status: 200,
       headers: {
@@ -16,9 +17,9 @@ const updateData = async (req: NextResponse) => {
       },
     });
   } catch (err) {
-    console.error("Error retrieving data:", err);
+    console.error("Error updating data:", err);
     throw err;
   }
 };
 
-export { updateData as POST };
+export { updateData as PUT };

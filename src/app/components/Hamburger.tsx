@@ -109,7 +109,7 @@ const Hamburger = ({
           className={"px-2 py-2 hover:bg-slate-500"}
           onClick={() => {
             fetch("api/hooks/useUpdateData/", {
-              method: "POST",
+              method: "PUT",
               body: JSON.stringify(reqBody),
             }).then((r) => console.log(r.text()));
           }}
