@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 interface TextAreaProps {
   setFileData: (arg: string) => void;
   fileData: string;
 }
 const TextArea = ({ setFileData, fileData }: TextAreaProps) => {
+  const ref = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    if (fileData !== ref.current?.value) {
+      ref.current!.value = fileData;
+    }
+  }, [fileData]);
+
   const handleTab = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Tab") {
       e.preventDefault();
@@ -24,6 +32,7 @@ const TextArea = ({ setFileData, fileData }: TextAreaProps) => {
     <div className="me-1 w-1/2">
       <textarea
         id="editor"
+        ref={ref}
         className="resize-both m-2 h-full w-full border border-black bg-slate-400 p-2 text-slate-50 focus:outline-none"
         cols={30}
         rows={30}
