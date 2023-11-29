@@ -3,12 +3,12 @@ import { sql } from "@vercel/postgres";
 
 const updateData = async (req: NextResponse) => {
   try {
-    let { filename, file_data, new_filename } = await req.json();
+    let { id, filename, file_data, new_filename } = await req.json();
 
     new_filename = new_filename.length > 0 ? new_filename : filename;
 
     const res =
-      await sql`UPDATE files SET file_data = ${file_data}, filename = ${new_filename} WHERE filename = ${filename}`;
+      await sql`UPDATE files SET file_data = ${file_data}, filename = ${new_filename} WHERE filename = ${filename} AND id = ${id}`;
 
     return new NextResponse(JSON.stringify(res), {
       status: 200,

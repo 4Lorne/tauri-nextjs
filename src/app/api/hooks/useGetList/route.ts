@@ -1,13 +1,11 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
-const getList = async (res: NextResponse) => {
+const getList = async () => {
   try {
-    const result = await sql`SELECT filename from files`;
+    const result = await sql`SELECT id, filename, file_data from files`;
 
-    const filenames = result.rows.map((row) => row.filename);
-
-    return new NextResponse(JSON.stringify(filenames), {
+    return new NextResponse(JSON.stringify(result), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

@@ -38,7 +38,7 @@ const Hamburger = ({
           return response.json();
         })
         .then((data) => {
-          setFileList(data);
+          setFileList(data.rows);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -55,11 +55,15 @@ const Hamburger = ({
           setShowButtons={setShowButtons}
           setShowList={setShowList}
         />
+
         {showButtons && (
           <ShowFilesButton setShowList={setShowList} showList={showList} />
         )}
+
         {showList && <NewFileButton />}
+
         <SaveFileButton
+          fileList={fileList}
           fileData={fileData}
           filename={filename}
           newFilename={newFilename}
