@@ -19,4 +19,4 @@ const getList = async (res: NextResponse) => {
   }
 };
 
-export { getList as POST };
+export { getList as GET };

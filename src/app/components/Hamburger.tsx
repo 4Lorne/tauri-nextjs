@@ -6,6 +6,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/20/solid";
+import { ENDPOINTS } from "@/app/api/endpoints";
 
 const Hamburger = ({
   setText,
@@ -27,9 +28,8 @@ const Hamburger = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("api/hooks/useGetList/", {
-          method: "POST",
-          body: JSON.stringify({}),
+        const response = await fetch(ENDPOINTS.GET_LIST, {
+          method: "GET", // Change the request method to GET
         });
 
         if (!response.ok) {
