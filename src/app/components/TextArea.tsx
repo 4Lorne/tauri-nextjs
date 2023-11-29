@@ -1,10 +1,20 @@
 import React, { useEffect, useRef } from "react";
+import { ENDPOINTS } from "@/app/api/endpoints";
 
 interface TextAreaProps {
   setFileData: (arg: string) => void;
   fileData: string;
+  filename: string;
+  newFilename: string;
+  fileID: number;
 }
-const TextArea = ({ setFileData, fileData }: TextAreaProps) => {
+const TextArea = ({
+  setFileData,
+  fileData,
+  filename,
+  newFilename,
+  fileID,
+}: TextAreaProps) => {
   const ref = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
@@ -28,6 +38,20 @@ const TextArea = ({ setFileData, fileData }: TextAreaProps) => {
     }
   };
 
+  const saveData = async () => {
+    const requestBody = {
+      id: fileID,
+      filename: filename,
+      new_filename: newFilename,
+      file_data: fileData,
+    };
+
+    await fetch(ENDPOINTS.PUT_DATA, {
+      method: "PUT",
+      body: JSON.stringify(requestBody),
+    });
+  };
+
   return (
     <div className="me-1 w-1/2">
       <textarea
@@ -39,6 +63,7 @@ const TextArea = ({ setFileData, fileData }: TextAreaProps) => {
         onKeyDown={handleTab}
         onChange={(e) => setFileData(e.target.value)}
         defaultValue={fileData}
+        onBlur={saveData}
       />
     </div>
   );

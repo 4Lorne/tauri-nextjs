@@ -4,16 +4,13 @@ import { useToggle } from "usehooks-ts";
 import { ShowButtons } from "@/app/components/Buttons/ShowButtons";
 import { ShowFilesButton } from "@/app/components/Buttons/ShowFilesButton";
 import { NewFileButton } from "@/app/components/Buttons/NewFileButton";
-import { SaveFileButton } from "@/app/components/Buttons/SaveFileButton";
 import { SelectFileButton } from "@/app/components/Buttons/SelectFileButton";
 import { TextFile } from "@/app/types/TextFile";
 
 interface HamburgerProps {
   setFileData: (arg: string) => void;
   setFileName: (arg: string) => void;
-  fileData: string;
-  filename: string;
-  newFilename: string;
+  setFileID: (arg: number) => void;
 }
 
 const fetchData = (setFileList: (data: TextFile[]) => void) => {
@@ -34,17 +31,10 @@ const fetchData = (setFileList: (data: TextFile[]) => void) => {
     });
 };
 
-const Hamburger = ({
-  setFileData,
-  setFileName,
-  fileData,
-  filename,
-  newFilename,
-}: HamburgerProps) => {
+const Hamburger = ({ setFileData, setFileName, setFileID }: HamburgerProps) => {
   const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
   const [fileList, setFileList] = useState<TextFile[]>([]);
-  const [fileID, setFileID] = useState(0);
 
   useEffect(() => {
     fetchData(setFileList);
@@ -68,13 +58,6 @@ const Hamburger = ({
         )}
 
         {showList && <NewFileButton fileCreated={onFileCreation} />}
-
-        <SaveFileButton
-          fileID={fileID}
-          fileData={fileData}
-          filename={filename}
-          newFilename={newFilename}
-        />
       </div>
 
       {showList && (

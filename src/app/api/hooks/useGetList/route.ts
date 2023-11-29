@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 
 const getList = async () => {
   try {
-    const result = await sql`SELECT id, filename, file_data from files`;
+    const result =
+      await sql`SELECT id, filename, file_data from files ORDER BY filename`;
 
     return new NextResponse(JSON.stringify(result), {
       status: 200,

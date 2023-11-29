@@ -11,6 +11,7 @@ import Hamburger from "@/app/components/Hamburger";
 export default function Home() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
+  const [fileID, setFileID] = useState(0);
   const [newFilename, setNewFilename] = useState("");
   const [selectedText, setSelectedText] = useState("");
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
@@ -40,9 +41,7 @@ export default function Home() {
       <Hamburger
         setFileData={setFileData}
         setFileName={setFilename}
-        fileData={fileData}
-        filename={filename}
-        newFilename={newFilename}
+        setFileID={setFileID}
       />
       {/*<Title />*/}
       {/*<form*/}
@@ -60,16 +59,27 @@ export default function Home() {
       {/*<div className="bg-slate-600 ps-2 pt-2">*/}
       {/*  <Toolbar selectedText={selectedText} setText={setText} text={text} />{" "}*/}
       {/*</div>*/}
-      <div className={"ml-2 mt-2"}>
-        {/*<input*/}
-        {/*  defaultValue={fileName}*/}
-        {/*  onBlur={(e) => setNewFileName(e.target.value)}*/}
-        {/*/>*/}
-      </div>
-      <div className="flex h-screen flex-row bg-slate-600">
-        <TextArea setFileData={setFileData} fileData={fileData} />
-        <MarkdownArea fileData={fileData} />
-      </div>
+
+      {filename && (
+        <>
+          <div className={"ml-2 mt-2"}>
+            <input
+              defaultValue={filename}
+              onBlur={(e) => setFilename(e.target.value)}
+            />
+          </div>
+          <div className="flex h-screen flex-row bg-slate-600">
+            <TextArea
+              setFileData={setFileData}
+              fileData={fileData}
+              filename={filename}
+              newFilename={newFilename}
+              fileID={fileID}
+            />
+            <MarkdownArea fileData={fileData} />
+          </div>
+        </>
+      )}
     </>
   );
 }
