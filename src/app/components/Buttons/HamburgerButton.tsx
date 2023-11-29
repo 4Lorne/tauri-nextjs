@@ -11,9 +11,13 @@ interface HamburgerProps {
   setFileData: (arg: string) => void;
   setFileName: (arg: string) => void;
   setFileID: (arg: number) => void;
+  setFileList: (
+    value: ((prevState: TextFile[]) => TextFile[]) | TextFile[],
+  ) => void;
+  fileList: TextFile[];
 }
 
-const fetchData = (setFileList: (data: TextFile[]) => void) => {
+export const fetchData = (setFileList: (data: TextFile[]) => void) => {
   fetch(ENDPOINTS.GET_LIST, {
     method: "GET",
   })
@@ -31,14 +35,19 @@ const fetchData = (setFileList: (data: TextFile[]) => void) => {
     });
 };
 
-const Hamburger = ({ setFileData, setFileName, setFileID }: HamburgerProps) => {
+const HamburgerButton = ({
+  setFileData,
+  setFileName,
+  setFileID,
+  setFileList,
+  fileList,
+}: HamburgerProps) => {
   const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
-  const [fileList, setFileList] = useState<TextFile[]>([]);
 
   useEffect(() => {
     fetchData(setFileList);
-  }, []);
+  }, [setFileList]);
 
   const onFileCreation = (createdFile: TextFile) => {
     setFileList((prevFileList) => [...prevFileList, createdFile]);
@@ -72,4 +81,4 @@ const Hamburger = ({ setFileData, setFileName, setFileID }: HamburgerProps) => {
   );
 };
 
-export default Hamburger;
+export default HamburgerButton;

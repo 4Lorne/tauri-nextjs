@@ -5,43 +5,27 @@ import TextArea from "./components/TextArea";
 import Title from "./components/Title";
 import Toolbar from "./components/Toolbar";
 import { PutBlobResult } from "@vercel/blob";
-import { upload } from "@vercel/blob/client";
-import Hamburger from "@/app/components/Hamburger";
+import HamburgerButton from "@/app/components/Buttons/HamburgerButton";
+import { TextFile } from "@/app/types/TextFile";
 
 export default function Home() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
   const [fileID, setFileID] = useState(0);
   const [newFilename, setNewFilename] = useState("");
+  const [fileList, setFileList] = useState<TextFile[]>([]);
   const [selectedText, setSelectedText] = useState("");
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   if (!inputFileRef.current?.files) {
-  //     throw new Error("No file selected");
-  //   }
-  //
-  //   const file = inputFileRef.current.files[0];
-  //
-  //   const newBlob = await upload(file.name, file, {
-  //     access: "public",
-  //     handleUploadUrl: "/api/upload",
-  //   });
-  //
-  //   setBlob(newBlob);
-  // };
-
-  //TODO: Loading state on save button
-  //TODO: Save button should be disabled if no changes have been made
-
   return (
     <>
-      <Hamburger
+      <HamburgerButton
         setFileData={setFileData}
         setFileName={setFilename}
         setFileID={setFileID}
+        setFileList={setFileList}
+        fileList={fileList}
       />
       {/*<Title />*/}
       {/*<form*/}
@@ -62,19 +46,17 @@ export default function Home() {
 
       {filename && (
         <>
-          <div className={"ml-2 mt-2"}>
-            <input
-              defaultValue={filename}
-              onBlur={(e) => setFilename(e.target.value)}
-            />
-          </div>
+          <div className={"ml-2 mt-2"}></div>
           <div className="flex h-screen flex-row bg-slate-600">
             <TextArea
               setFileData={setFileData}
               fileData={fileData}
               filename={filename}
+              setNewFilename={setNewFilename}
               newFilename={newFilename}
               fileID={fileID}
+              setFileList={setFileList}
+              setFilename={setFilename}
             />
             <MarkdownArea fileData={fileData} />
           </div>

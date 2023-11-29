@@ -1,10 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { ENDPOINTS } from "@/app/api/endpoints";
+import { fetchData } from "@/app/components/Buttons/HamburgerButton";
+import { TextFile } from "@/app/types/TextFile";
 
 interface TextAreaProps {
   setFileData: (arg: string) => void;
   fileData: string;
   filename: string;
+  setFilename: (arg: string) => void;
+  setNewFilename: (arg: string) => void;
+  setFileList: (
+    value: ((prevState: TextFile[]) => TextFile[]) | TextFile[],
+  ) => void;
   newFilename: string;
   fileID: number;
 }
@@ -12,16 +19,22 @@ const TextArea = ({
   setFileData,
   fileData,
   filename,
+  setNewFilename,
+  setFileList,
+  setFilename,
   newFilename,
   fileID,
 }: TextAreaProps) => {
   const ref = useRef<HTMLTextAreaElement | null>(null);
-
+  const inputRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
     if (fileData !== ref.current?.value) {
       ref.current!.value = fileData;
     }
-  }, [fileData]);
+    if (filename !== ref.current?.value) {
+      inputRef.current!.value = filename;
+    }
+  }, [fileData, filename]);
 
   const handleTab = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Tab") {
@@ -50,10 +63,20 @@ const TextArea = ({
       method: "PUT",
       body: JSON.stringify(requestBody),
     });
+
+    fetchData(setFileList);
+    setFileData(fileData);
+    setFilename(newFilename);
   };
 
   return (
     <div className="me-1 w-1/2">
+      <input
+        defaultValue={filename}
+        ref={inputRef}
+        onChange={(e) => setNewFilename(e.target.value)}
+        onBlur={saveData}
+      />
       <textarea
         id="editor"
         ref={ref}
@@ -64,7 +87,7 @@ const TextArea = ({
         onChange={(e) => setFileData(e.target.value)}
         defaultValue={fileData}
         onBlur={saveData}
-      />
+      ></textarea>
     </div>
   );
 };
