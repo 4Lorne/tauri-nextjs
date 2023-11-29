@@ -25,6 +25,7 @@ const Hamburger = ({
   const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
   const [fileList, setFileList] = useState([]);
+  const [fileID, setFileID] = useState(0);
 
   useEffect(() => {
     const fetchData = () => {
@@ -63,7 +64,7 @@ const Hamburger = ({
         {showList && <NewFileButton />}
 
         <SaveFileButton
-          fileList={fileList}
+          fileID={fileID}
           fileData={fileData}
           filename={filename}
           newFilename={newFilename}
@@ -73,6 +74,7 @@ const Hamburger = ({
       {showList && (
         <SelectFileButton
           fileList={fileList}
+          setFileID={setFileID}
           setFileData={setFileData}
           setFileName={setFileName}
         />

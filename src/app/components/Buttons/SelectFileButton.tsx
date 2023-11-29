@@ -6,6 +6,7 @@ interface SelectFileButtonProps {
     filename: string;
     file_data: { type: string; data: number[] };
   }[];
+  setFileID: (arg: number) => void;
   setFileData: (arg: string) => void;
   setFileName: (arg: string) => void;
 }
@@ -14,6 +15,7 @@ export const SelectFileButton = ({
   fileList,
   setFileData,
   setFileName,
+  setFileID,
 }: SelectFileButtonProps) => {
   return fileList.map((file, index) => (
     <button
@@ -33,6 +35,7 @@ export const SelectFileButton = ({
         const fileData = data.rows[0].file_data?.data || [];
         setFileData(Buffer.from(fileData).toString("utf-8"));
         setFileName(file.filename);
+        setFileID(file.id);
       }}
     >
       <label className={"hover:bg-slate-500"}>{file.filename}</label>

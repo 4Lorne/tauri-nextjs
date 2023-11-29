@@ -4,14 +4,17 @@ interface SaveFileButtonProps {
   filename: string;
   newFilename: string;
   fileData: string;
+  fileID: number;
 }
 
 export const SaveFileButton = ({
   filename,
   fileData,
   newFilename,
+  fileID,
 }: SaveFileButtonProps) => {
   const requestBody = {
+    id: fileID,
     filename: filename,
     new_filename: newFilename,
     file_data: fileData,
