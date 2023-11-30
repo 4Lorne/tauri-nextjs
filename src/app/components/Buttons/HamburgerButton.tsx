@@ -7,12 +7,11 @@ import { NewFileButton } from "@/app/components/Buttons/NewFileButton";
 import { SelectFileButton } from "@/app/components/Buttons/SelectFileButton";
 import { TextFile } from "@/app/types/TextFile";
 import { DeleteFileButton } from "@/app/components/Buttons/DeleteFileButton";
-import Select from "react-select/base";
 import FilenameInput from "@/app/components/FilenameInput";
 
 interface HamburgerProps {
   setFileData: (arg: string) => void;
-  setFileName: (arg: string) => void;
+  setFilename: (arg: string) => void;
   setFileID: (arg: number) => void;
   setFileList: (
     value: ((prevState: TextFile[]) => TextFile[]) | TextFile[],
@@ -45,7 +44,7 @@ export const fetchData = (setFileList: (data: TextFile[]) => void) => {
 
 const HamburgerButton = ({
   setFileData,
-  setFileName,
+  setFilename,
   setFileID,
   setFileList,
   fileList,
@@ -79,9 +78,9 @@ const HamburgerButton = ({
           setShowButtons={setShowButtons}
           setShowList={setShowList}
         />
-        <ShowFilesButton setShowList={setShowList} showList={showList} />
         {showButtons && (
           <>
+            <ShowFilesButton setShowList={setShowList} showList={showList} />
             <NewFileButton onFileCreation={onFileCreation} />
             <DeleteFileButton id={fileID} onFileDeletion={onFileDeletion} />
           </>
@@ -95,8 +94,7 @@ const HamburgerButton = ({
               fileID={fileID}
               fileData={fileData}
               newFilename={newFilename}
-              setFilename={setFileName}
-              setFileData={setFileData}
+              setFilename={setFilename}
               setFileList={setFileList}
             />
           </div>
@@ -108,7 +106,7 @@ const HamburgerButton = ({
           fileList={fileList}
           setFileID={setFileID}
           setFileData={setFileData}
-          setFileName={setFileName}
+          setFileName={setFilename}
         />
       )}
     </>

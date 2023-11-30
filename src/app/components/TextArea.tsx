@@ -7,8 +7,6 @@ interface TextAreaProps {
   setFileData: (arg: string) => void;
   fileData: string;
   filename: string;
-  setFilename: (arg: string) => void;
-  setNewFilename: (arg: string) => void;
   setFileList: (
     value: ((prevState: TextFile[]) => TextFile[]) | TextFile[],
   ) => void;
@@ -19,13 +17,12 @@ const TextArea = ({
   setFileData,
   fileData,
   filename,
-  setNewFilename,
   setFileList,
-  setFilename,
   newFilename,
   fileID,
 }: TextAreaProps) => {
   const ref = useRef<HTMLTextAreaElement | null>(null);
+
   useEffect(() => {
     if (fileData !== ref.current?.value) {
       ref.current!.value = fileData;
@@ -69,7 +66,7 @@ const TextArea = ({
       <textarea
         id="editor"
         ref={ref}
-        className="resize-both m-2 h-full w-full border border-black bg-slate-400 p-2 text-slate-50 focus:outline-none"
+        className="m-2 h-full w-full bg-slate-400 p-2 text-slate-50 shadow-lg focus:outline-none"
         cols={30}
         rows={30}
         onKeyDown={handleTab}

@@ -19,7 +19,7 @@ export const SelectFileButton = ({
 }: SelectFileButtonProps) => {
   return fileList.map((file, index) => (
     <button
-      className={"flex flex-col text-slate-50 hover:text-slate-300"}
+      className={"flex flex-col text-slate-50"}
       key={index}
       onClick={async () => {
         const response = await fetch(
@@ -38,7 +38,11 @@ export const SelectFileButton = ({
         setFileID(file.id);
       }}
     >
-      <label className={"hover:bg-slate-500"}>{file.filename}</label>
+      <label
+        className={"mx-1 my-1.5 px-1 py-1 hover:rounded-md hover:bg-slate-500"}
+      >
+        {file.filename}
+      </label>
     </button>
   ));
 };

@@ -10,7 +10,6 @@ interface FilenameInputProps {
   newFilename: string;
   fileData: string;
   setFilename: (arg: string) => void;
-  setFileData: (arg: string) => void;
   setFileList: (
     value: ((prevState: TextFile[]) => TextFile[]) | TextFile[],
   ) => void;
@@ -22,7 +21,6 @@ const FilenameInput = ({
   newFilename,
   fileData,
   setFilename,
-  setFileData,
   setFileList,
 }: FilenameInputProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -41,7 +39,7 @@ const FilenameInput = ({
       file_data: fileData,
     };
 
-    setFilename(newFilename);
+    setFilename(newFilename.length > 0 ? newFilename : filename);
 
     await fetch(ENDPOINTS.PUT_DATA, {
       method: "PUT",
@@ -57,7 +55,9 @@ const FilenameInput = ({
       ref={inputRef}
       onChange={(e) => setNewFilename(e.target.value)}
       onBlur={saveData}
-      className={"border border-black bg-slate-400 text-slate-50"}
+      className={
+        "bg-slate-500 pe-3 text-end text-3xl font-bold text-slate-100 text-slate-50 focus:outline-none"
+      }
     />
   );
 };

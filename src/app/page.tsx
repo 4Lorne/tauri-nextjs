@@ -18,7 +18,7 @@ export default function Home() {
       <Title />
       <HamburgerButton
         setFileData={setFileData}
-        setFileName={setFilename}
+        setFilename={setFilename}
         setFileID={setFileID}
         setFileList={setFileList}
         fileList={fileList}
@@ -33,11 +33,9 @@ export default function Home() {
           setFileData={setFileData}
           fileData={fileData}
           filename={filename}
-          setNewFilename={setNewFilename}
           newFilename={newFilename}
           fileID={fileID}
           setFileList={setFileList}
-          setFilename={setFilename}
         />
         <MarkdownArea fileData={fileData} />
       </div>

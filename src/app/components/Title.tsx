@@ -4,7 +4,7 @@ const Title = () => {
       <h2 className="text-4xl font-bold tracking-tight text-slate-100 sm:text-6xl">
         LDMD
       </h2>
-      <p className="mt-6 text-lg leading-8 text-slate-100">
+      <p className="text-lg leading-8 text-slate-100">
         A basic markdown editor.
       </p>
     </div>
