@@ -2,9 +2,9 @@ import { ENDPOINTS } from "@/app/api/endpoints";
 import { PencilSquareIcon } from "@heroicons/react/20/solid";
 
 interface NewFileButtonProps {
-  fileCreated: (arg: any) => void;
+  onFileCreation: (arg: any) => void;
 }
-export const NewFileButton = ({ fileCreated }: NewFileButtonProps) => {
+export const NewFileButton = ({ onFileCreation }: NewFileButtonProps) => {
   const defaultFile = {
     filename: "Untitled" + Math.floor(Math.random() * 1000),
     file_data: "",
@@ -20,7 +20,7 @@ export const NewFileButton = ({ fileCreated }: NewFileButtonProps) => {
         });
         const createdFile = await response.json();
 
-        fileCreated(createdFile);
+        onFileCreation(createdFile);
       }}
     >
       <PencilSquareIcon

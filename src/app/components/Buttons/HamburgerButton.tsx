@@ -6,6 +6,7 @@ import { ShowFilesButton } from "@/app/components/Buttons/ShowFilesButton";
 import { NewFileButton } from "@/app/components/Buttons/NewFileButton";
 import { SelectFileButton } from "@/app/components/Buttons/SelectFileButton";
 import { TextFile } from "@/app/types/TextFile";
+import { DeleteFileButton } from "@/app/components/Buttons/DeleteFileButton";
 
 interface HamburgerProps {
   setFileData: (arg: string) => void;
@@ -15,6 +16,7 @@ interface HamburgerProps {
     value: ((prevState: TextFile[]) => TextFile[]) | TextFile[],
   ) => void;
   fileList: TextFile[];
+  fileID: number;
 }
 
 export const fetchData = (setFileList: (data: TextFile[]) => void) => {
@@ -41,6 +43,7 @@ const HamburgerButton = ({
   setFileID,
   setFileList,
   fileList,
+  fileID,
 }: HamburgerProps) => {
   const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
@@ -54,6 +57,9 @@ const HamburgerButton = ({
     fetchData(setFileList);
   };
 
+  const reqBody = {
+    id: fileID,
+  };
   return (
     <>
       <div className={"flex bg-red-800"}>
@@ -66,7 +72,9 @@ const HamburgerButton = ({
           <ShowFilesButton setShowList={setShowList} showList={showList} />
         )}
 
-        {showList && <NewFileButton fileCreated={onFileCreation} />}
+        {showList && <NewFileButton onFileCreation={onFileCreation} />}
+
+        <DeleteFileButton id={fileID} />
       </div>
 
       {showList && (

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import MarkdownArea from "./components/MarkdownArea";
 import TextArea from "./components/TextArea";
 import Title from "./components/Title";
@@ -14,9 +14,9 @@ export default function Home() {
   const [fileID, setFileID] = useState(0);
   const [newFilename, setNewFilename] = useState("");
   const [fileList, setFileList] = useState<TextFile[]>([]);
+
   const [selectedText, setSelectedText] = useState("");
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
-  const inputFileRef = useRef<HTMLInputElement>(null);
 
   return (
     <>
@@ -26,6 +26,7 @@ export default function Home() {
         setFileID={setFileID}
         setFileList={setFileList}
         fileList={fileList}
+        fileID={fileID}
       />
       {/*<Title />*/}
       {/*<form*/}
