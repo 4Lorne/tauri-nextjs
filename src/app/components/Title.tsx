@@ -5,7 +5,7 @@ const Title = () => {
         LDMD
       </h2>
       <p className="mt-6 text-lg leading-8 text-slate-100">
-        Markdown editor in progress.
+        A basic markdown editor.
       </p>
     </div>
   );

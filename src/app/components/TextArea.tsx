@@ -26,15 +26,11 @@ const TextArea = ({
   fileID,
 }: TextAreaProps) => {
   const ref = useRef<HTMLTextAreaElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
     if (fileData !== ref.current?.value) {
       ref.current!.value = fileData;
     }
-    if (filename !== ref.current?.value) {
-      inputRef.current!.value = filename;
-    }
-  }, [fileData, filename]);
+  }, [fileData]);
 
   const handleTab = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Tab") {
@@ -66,17 +62,10 @@ const TextArea = ({
 
     fetchData(setFileList);
     setFileData(fileData);
-    setFilename(newFilename);
   };
 
   return (
     <div className="me-1 w-1/2">
-      <input
-        defaultValue={filename}
-        ref={inputRef}
-        onChange={(e) => setNewFilename(e.target.value)}
-        onBlur={saveData}
-      />
       <textarea
         id="editor"
         ref={ref}

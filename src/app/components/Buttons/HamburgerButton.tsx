@@ -7,6 +7,8 @@ import { NewFileButton } from "@/app/components/Buttons/NewFileButton";
 import { SelectFileButton } from "@/app/components/Buttons/SelectFileButton";
 import { TextFile } from "@/app/types/TextFile";
 import { DeleteFileButton } from "@/app/components/Buttons/DeleteFileButton";
+import Select from "react-select/base";
+import FilenameInput from "@/app/components/FilenameInput";
 
 interface HamburgerProps {
   setFileData: (arg: string) => void;
@@ -17,6 +19,10 @@ interface HamburgerProps {
   ) => void;
   fileList: TextFile[];
   fileID: number;
+  filename: string;
+  fileData: string;
+  newFilename: string;
+  setNewFilename: (arg: string) => void;
 }
 
 export const fetchData = (setFileList: (data: TextFile[]) => void) => {
@@ -44,6 +50,10 @@ const HamburgerButton = ({
   setFileList,
   fileList,
   fileID,
+  filename,
+  fileData,
+  newFilename,
+  setNewFilename,
 }: HamburgerProps) => {
   const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
@@ -57,24 +67,40 @@ const HamburgerButton = ({
     fetchData(setFileList);
   };
 
-  const reqBody = {
-    id: fileID,
+  const onFileDeletion = (deletedFile: TextFile) => {
+    setFileList((prevFileList) => [...prevFileList, deletedFile]);
+    fetchData(setFileList);
   };
+
   return (
     <>
-      <div className={"flex bg-red-800"}>
+      <div className="flex items-center bg-slate-500">
         <ShowButtons
           setShowButtons={setShowButtons}
           setShowList={setShowList}
         />
-
+        <ShowFilesButton setShowList={setShowList} showList={showList} />
         {showButtons && (
-          <ShowFilesButton setShowList={setShowList} showList={showList} />
+          <>
+            <NewFileButton onFileCreation={onFileCreation} />
+            <DeleteFileButton id={fileID} onFileDeletion={onFileDeletion} />
+          </>
         )}
 
-        {showList && <NewFileButton onFileCreation={onFileCreation} />}
-
-        <DeleteFileButton id={fileID} />
+        <div className="flex flex-grow justify-end">
+          <div className="flex flex-col text-slate-50 hover:text-slate-300">
+            <FilenameInput
+              filename={filename}
+              setNewFilename={setNewFilename}
+              fileID={fileID}
+              fileData={fileData}
+              newFilename={newFilename}
+              setFilename={setFileName}
+              setFileData={setFileData}
+              setFileList={setFileList}
+            />
+          </div>
+        </div>
       </div>
 
       {showList && (

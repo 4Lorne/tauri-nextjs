@@ -8,4 +8,7 @@ export enum ENDPOINTS {
 
   //PUT
   PUT_DATA = "/api/hooks/useUpdateData",
+
+  //DELETE
+  DELETE_DATA = "/api/hooks/useDeleteData",
 }
