@@ -56,7 +56,7 @@ const HamburgerButton = ({
 }: HamburgerProps) => {
   const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
-
+  console.log(fileList);
   useEffect(() => {
     fetchData(setFileList);
   }, [setFileList]);
