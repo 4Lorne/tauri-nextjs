@@ -7,8 +7,8 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "tauri-nextjs",
-    "version": "0.1.0"
+    "productName": "ldmd",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {

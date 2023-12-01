@@ -21,4 +21,4 @@ const getData = async (req: NextRequest) => {
   }
 };
 
-export { getData as GET };
+export { getData as POST };
