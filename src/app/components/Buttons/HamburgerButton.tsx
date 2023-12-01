@@ -24,22 +24,23 @@ interface HamburgerProps {
   setNewFilename: (arg: string) => void;
 }
 
-export const fetchData = (setFileList: (data: TextFile[]) => void) => {
-  fetch(ENDPOINTS.GET_LIST, {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      setFileList(data.rows);
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
+export const fetchData = async (setFileList: (data: TextFile[]) => void) => {
+  try {
+    const response = await fetch(ENDPOINTS.GET_LIST, {
+      method: "GET",
+      headers: { "Cache-Control": "no-cache" },
+      next: { revalidate: 10 },
     });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    const data = await response.json();
+    setFileList(data.rows);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 };
 
 const HamburgerButton = ({
@@ -56,7 +57,7 @@ const HamburgerButton = ({
 }: HamburgerProps) => {
   const [showButtons, setShowButtons] = useToggle(false);
   const [showList, setShowList] = useState(false);
-  console.log(fileList);
+
   useEffect(() => {
     fetchData(setFileList);
   }, [setFileList]);
@@ -67,7 +68,9 @@ const HamburgerButton = ({
   };
 
   const onFileDeletion = (deletedFile: TextFile) => {
-    setFileList((prevFileList) => [...prevFileList, deletedFile]);
+    setFileList((prevFileList) =>
+      prevFileList.filter((file) => file.id !== deletedFile.id),
+    );
     fetchData(setFileList);
   };
 
