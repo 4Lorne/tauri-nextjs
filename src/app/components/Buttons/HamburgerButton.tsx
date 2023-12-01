@@ -37,6 +37,7 @@ export const fetchData = async (setFileList: (data: TextFile[]) => void) => {
     }
 
     const data = await response.json();
+    console.log(data.rows);
     setFileList(data.rows);
   } catch (error) {
     console.error("Error fetching data:", error);
