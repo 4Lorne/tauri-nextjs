@@ -39,7 +39,9 @@ export const SelectFileButton = ({
       }}
     >
       <label
-        className={"mx-1 my-1.5 px-1 py-1 hover:rounded-md hover:bg-slate-500"}
+        className={
+          "mx-1 my-1.5 cursor-pointer px-1 py-1 hover:rounded-md hover:bg-slate-500"
+        }
       >
         {file.filename}
       </label>
